@@ -70,19 +70,41 @@ curl http://localhost:5000/api/stats/abc123
 
 # Response: {"url": "https://www.example.com/very/long/url", "clicks": 5, "created_at": "2024-01-01T10:00:00"}
 ```
+###  API usage 
+```bash
+# ✅ 1. Health Check
+curl http://127.0.0.1:5000/api/health
 
-GET http://127.0.0.1:5000/api/health → Check if the API is running.
+# Expected Response:
+# {
+#   "status": "healthy",
+#   "service": "URL Shortener API"
+# }
 
-POST http://127.0.0.1:5000/api/shorten → Shorten a URL.
+# 🔗 2. Shorten a URL
+curl -X POST http://127.0.0.1:5000/api/shorten \
+  -H "Content-Type: application/json" \
+  -d '{"url": "https://www.linkedin.com/in/karthikeyan-v-09905a286/"}'
 
-Body: { "url": "https://www.linkedin.com/in/karthikeyan-v-09905a286/" }
-Response:{
-   
-    "short_code": "uPb5Dt",
-    "short_url": "http://localhost:5000/uPb5Dt"
-}
+# Example Response:
+# {
+#   "short_code": "uPb5Dt",
+#   "short_url": "http://localhost:5000/uPb5Dt"
+# }
 
-GET "http://localhost:5000/uPb5Dt" → Test the redirection.
+# 🚀 3. Redirect Using Short URL
+curl -L http://localhost:5000/uPb5Dt
 
-GET http://127.0.0.1:5000/api/stats/uPb5Dt → Check the stats for the shortened URL.
+# This follows the redirect to:
+# https://www.linkedin.com/in/karthikeyan-v-09905a286/
 
+# 📊 4. Get URL Analytics
+curl http://127.0.0.1:5000/api/stats/uPb5Dt
+
+# Example Response:
+# {
+#   "url": "https://www.linkedin.com/in/karthikeyan-v-09905a286/",
+#   "clicks": 3,
+#   "created_at": "2025-07-24T14:30:12"
+# }
+```
